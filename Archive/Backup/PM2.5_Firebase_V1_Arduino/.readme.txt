@@ -1,0 +1,36 @@
+RMUTR PM2.5 Firebase V1 Arduino 
+The air quality monitor and store in Firebase. 
+
+GitHub 
+------------------------------------------------------------------------------- 
+1 https://github.com 
+    Username : [Username] 
+    Email    : [Email] 
+    Password : [Password] 
+2 https://git-scm.com 
+3 download and install 
+4 Config git 
+    Git Bash>git update-git-for-windows 
+    Git Bash>git --version 
+    Git Bash>git config --global user.name "[Username]" 
+    Git Bash>git config --global user.email "[Email]" 
+    Git Bash>git config --list 
+5 Git Basic Command 
+    Git Bash>git --version 
+    Git Bash>git clone https://github.com/rmutr/PM2.5_Firebase_V1_Arduino.git 
+    Git Bash>git clone https://github.com/rmutr/PM2.5_Firebase_V1_Arduino.git [Foldername] 
+    Git Bash>git submodule update --init --recursive 
+    Git Bash>git submodule update --remote --merge 
+    Git Bash>git pull 
+    Git Bash>git add . 
+    Git Bash>git commit -m "[Comment]" 
+    Git Bash>git push 
+6 Rollback to [hashid] commit point 
+    Git Bash>git checkout [hashid] 
+
+
+
+Other 
+------------------------------------------------------------------------------- 
+https://guides.github.com/features/wikis 
+ 
