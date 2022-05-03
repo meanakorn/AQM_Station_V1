@@ -24,6 +24,11 @@ GitHub
     Git Bash>git add . 
     Git Bash>git commit -m "[Comment]" 
     Git Bash>git push 
+    Git Bash>git tag 
+    Git Bash>git tag 0.1 
+    Git Bash>git push origin 0.1 
+    Git Bash>git push origin -d 0.1 
+    Git Bash>git tag -d 0.1 
 6 Rollback to [hashid] commit point 
     Git Bash>git checkout [hashid] 
 
