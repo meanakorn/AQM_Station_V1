@@ -82,7 +82,7 @@ unsigned int udp_localPort = 1000;
 IPAddress timeServerIP;                           // time.nist.gov NTP server address 
 const char* ntpServerName = "time.nist.gov"; 
 const int NTP_PACKET_SIZE = 48;                   // NTP time stamp is in the first 48 bytes of the message 
-byte packetBuffer[ NTP_PACKET_SIZE];              // buffer to hold incoming and outgoing packets 
+byte packetBuffer[NTP_PACKET_SIZE];               // buffer to hold incoming and outgoing packets 
 
 WiFiUDP udp; 
 int ntp_Y, ntp_M, ntp_D, ntp_H, ntp_m, ntp_S, ntp_S_10; 
@@ -310,15 +310,15 @@ unsigned long sendNTPpacket(IPAddress& address) {
   memset(packetBuffer, 0, NTP_PACKET_SIZE);
   // Initialize values needed to form NTP request
   // (see URL above for details on the packets)
-  packetBuffer[0] = 0b11100011;   // LI, Version, Mode
-  packetBuffer[1] = 0;     // Stratum, or type of clock
-  packetBuffer[2] = 6;     // Polling Interval
-  packetBuffer[3] = 0xEC;  // Peer Clock Precision
+  packetBuffer[ 0] = 0b11100011;   // LI, Version, Mode
+  packetBuffer[ 1] = 0;     // Stratum, or type of clock
+  packetBuffer[ 2] = 6;     // Polling Interval
+  packetBuffer[ 3] = 0xEC;  // Peer Clock Precision
   // 8 bytes of zero for Root Delay & Root Dispersion
-  packetBuffer[12]  = 49;
-  packetBuffer[13]  = 0x4E;
-  packetBuffer[14]  = 49;
-  packetBuffer[15]  = 52;
+  packetBuffer[12] = 49;
+  packetBuffer[13] = 0x4E;
+  packetBuffer[14] = 49;
+  packetBuffer[15] = 52;
 
   // all NTP fields have been given values, now
   // you can send a packet requesting a timestamp:
@@ -339,19 +339,19 @@ void NTP_Update() {
 
     unsigned long highWord = word(packetBuffer[40], packetBuffer[41]); 
     unsigned long lowWord  = word(packetBuffer[42], packetBuffer[43]); 
-    unsigned long secsSince1900 = highWord << 16 | lowWord; 
-    unsigned long secs2020 = 3786825600UL; 
-    unsigned long secs2022 = 1641038400UL; 
-    unsigned long secs2023 = 1672574400UL; 
+    unsigned long secs_since_1900 = highWord << 16 | lowWord; 
 
-    if (secsSince1900 > 0) { 
-      unsigned long epoch = secsSince1900 - secs2022; 
+    if (secs_since_1900 > 0) { 
+      unsigned long epoch = secs_since_1900; 
+      unsigned long date_offset = 44894UL; 
       unsigned long gmt_offset = +7UL; 
+
       epoch = (epoch + (gmt_offset * 3600UL)); 
 
       ntp_Y = (int)2022; 
       ntp_M = (int)12; 
-      ntp_D = (int)(((epoch / 86400UL) + 1UL) - 60); 
+      ntp_D = (int)((epoch / 86400UL) - date_offset + 1UL); 
+      if (ntp_D > 99) { ntp_D = 99; } 
 
       ntp_H = (int)((epoch % 86400UL) / 3600UL); 
       ntp_m = (int)((epoch % 3600UL) / 60UL); 
