@@ -42,8 +42,8 @@ char str_buff[200] = {0};
 unsigned long t_old = 0; 
 int tmr_cnt = 0; 
 
-int status_process      = 0; 
-int status_process_mon  = 0; 
+int status_process        = 0; 
+int status_process_mon    = 0; 
 int error = 0; 
 
 unsigned int dix, dix_max = 0; 
@@ -55,6 +55,12 @@ unsigned int pm_1         = 0;
 unsigned int pm_25        = 0; 
 unsigned int pm_10        = 0; 
 
+//----------------------------------------------------------------------------- 
+#define PIN_ID_A2           32 
+#define PIN_ID_A1           33 
+#define PIN_ID_A0           25 
+
+unsigned int station_id   = 0; 
 
 //----------------------------------------------------------------------------- 
 #define SCREEN_WIDTH 128 
@@ -93,6 +99,10 @@ void Disp_Info();
 
 //----------------------------------------------------------------------------- 
 void setup() { 
+  pinMode(PIN_ID_A2, INPUT); 
+  pinMode(PIN_ID_A1, INPUT); 
+  pinMode(PIN_ID_A0, INPUT); 
+
   Serial.begin (9600, SERIAL_8N1, PIN_RX_0, PIN_TX_0); 
   Serial1.begin(9600, SERIAL_8N1, PIN_RX_1, PIN_TX_1); 
 
@@ -132,8 +142,9 @@ void setup() {
 
   Firebase.setStreamCallback(firebaseData_Rx, StreamCallback, StreamCallback_Timeout); 
 
-
 //----------------------------------------------------------------------------- 
+  station_id = (7 - ((digitalRead(PIN_ID_A2) * 4) + (digitalRead(PIN_ID_A1) * 2) + (digitalRead(PIN_ID_A0) * 1))); 
+
   pm_1  = 0; 
   pm_25 = 0; 
   pm_10 = 0; 
@@ -142,6 +153,7 @@ void setup() {
 
 
 void loop() { 
+  station_id = (7 - ((digitalRead(PIN_ID_A2) * 4) + (digitalRead(PIN_ID_A1) * 2) + (digitalRead(PIN_ID_A0) * 1))); 
 
   while (Serial1.available() > 0) { 
     din = Serial1.read(); 
@@ -210,7 +222,7 @@ void loop() {
 
     String bdatetime_str = str_buff; 
     
-    sprintf(str_buff, " | %04d | %4d | %4d | %4d | ", dtype, pm_1, pm_25, pm_10); 
+    sprintf(str_buff, " | %d | %04d | %4d | %4d | %4d | ", station_id, dtype, pm_1, pm_25, pm_10); 
     Serial.print(str_buff); 
 
     if (ntp_S_10 != (ntp_S / 10)) { 
