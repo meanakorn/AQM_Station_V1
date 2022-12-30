@@ -245,7 +245,11 @@ void loop() {
     display.setCursor(0, 10); 
     sprintf(str_buff, "Station_%d", station_id); 
     display.print(str_buff);
-    
+
+    display.setCursor(72, 10); 
+    sprintf(str_buff, "%02d:%02d:%02d", ntp_H, ntp_m, ntp_S); 
+    display.print(str_buff);
+
     display.setCursor(0, 25); 
     sprintf(str_buff, "PM  1.0 = %4d ug/m3 ", pm_1); 
     display.print(str_buff);
