@@ -30,8 +30,8 @@
 FirebaseData firebaseData_Rx; 
 FirebaseData firebaseData_Tx; 
 
-String system_path = "/Station_01/System"; 
-String log_path    = "/Station_01/Log"; 
+String system_path = "/Station_0/System"; 
+String log_path    = "/Station_0/Log"; 
 
 #define PIN_RX_0            3 
 #define PIN_TX_0            1 
@@ -67,7 +67,7 @@ unsigned int station_id   = 0;
 #define SCREEN_HEIGHT 64 
 
 #define OLED_RESET     4 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET); 
 
 #define NUMFLAKES     10 
 
@@ -132,6 +132,52 @@ void setup() {
   ntp_S_10 = 0; 
 
 //----------------------------------------------------------------------------- 
+  station_id = (7 - ((digitalRead(PIN_ID_A2) * 4) + (digitalRead(PIN_ID_A1) * 2) + (digitalRead(PIN_ID_A0) * 1))); 
+
+  switch (station_id) { 
+    default: 
+    case 0: 
+      system_path = "/Station_0/System"; 
+      log_path    = "/Station_0/Log"; 
+      break; 
+
+    case 1: 
+      system_path = "/Station_1/System"; 
+      log_path    = "/Station_1/Log"; 
+      break; 
+
+    case 2: 
+      system_path = "/Station_2/System"; 
+      log_path    = "/Station_2/Log"; 
+      break; 
+
+    case 3: 
+      system_path = "/Station_3/System"; 
+      log_path    = "/Station_3/Log"; 
+      break; 
+
+    case 4: 
+      system_path = "/Station_4/System"; 
+      log_path    = "/Station_4/Log"; 
+      break; 
+
+    case 5: 
+      system_path = "/Station_5/System"; 
+      log_path    = "/Station_5/Log"; 
+      break; 
+
+    case 6: 
+      system_path = "/Station_6/System"; 
+      log_path    = "/Station_6/Log"; 
+      break; 
+
+    case 7: 
+      system_path = "/Station_7/System"; 
+      log_path    = "/Station_7/Log"; 
+      break; 
+  } 
+
+//----------------------------------------------------------------------------- 
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH); 
   Firebase.reconnectWiFi(true); 
 
@@ -143,8 +189,6 @@ void setup() {
   Firebase.setStreamCallback(firebaseData_Rx, StreamCallback, StreamCallback_Timeout); 
 
 //----------------------------------------------------------------------------- 
-  station_id = (7 - ((digitalRead(PIN_ID_A2) * 4) + (digitalRead(PIN_ID_A1) * 2) + (digitalRead(PIN_ID_A0) * 1))); 
-
   pm_1  = 0; 
   pm_25 = 0; 
   pm_10 = 0; 
@@ -153,7 +197,6 @@ void setup() {
 
 
 void loop() { 
-  station_id = (7 - ((digitalRead(PIN_ID_A2) * 4) + (digitalRead(PIN_ID_A1) * 2) + (digitalRead(PIN_ID_A0) * 1))); 
 
   while (Serial1.available() > 0) { 
     din = Serial1.read(); 
