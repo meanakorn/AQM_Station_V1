@@ -9,6 +9,7 @@
 //                  : Adafruit GFX Library by Adafruit (1.11.3) 
 //                  : Adafruit SSD1306 by Adafruit (2.5.7) 
 //                  : Firebase ESP32 Client by Mobizt (4.3.0) 
+//                  : https://github.com/mobizt/Firebase-ESP32 
 
 //----------------------------------------------------------------------------- 
 #include <Arduino.h> 
@@ -121,7 +122,6 @@ void setup() {
   ntp_S_10 = 0; 
 
 //----------------------------------------------------------------------------- 
-  /* 
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH); 
   Firebase.reconnectWiFi(true); 
 
@@ -131,7 +131,7 @@ void setup() {
   }
 
   Firebase.setStreamCallback(firebaseData_Rx, StreamCallback, StreamCallback_Timeout); 
-  */ 
+
 
 //----------------------------------------------------------------------------- 
   pm_1  = 0; 
@@ -215,7 +215,7 @@ void loop() {
 
     if (ntp_S_10 != (ntp_S / 10)) { 
       ntp_S_10 = (ntp_S / 10); 
-      //error = Log_Add(bdatetime_str, (double)pm_1, (double)pm_25, (double)pm_10); 
+      error = Log_Add(bdatetime_str, (double)pm_1, (double)pm_25, (double)pm_10); 
       Serial.print("Updated "); 
     } 
 
@@ -292,8 +292,8 @@ void NTP_Update() {
       unsigned long gmt_offset = +7UL; 
       epoch = (epoch + (gmt_offset * 3600UL)); 
 
-      ntp_Y = (int)2020; 
-      ntp_M = (int)3; 
+      ntp_Y = (int)2022; 
+      ntp_M = (int)12; 
       ntp_D = (int)(((epoch / 86400UL) + 1UL) - 60); 
 
       ntp_H = (int)((epoch % 86400UL) / 3600UL); 
