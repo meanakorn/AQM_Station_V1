@@ -242,19 +242,19 @@ void loop() {
     display.setTextSize(1.5); 
     display.setTextColor(WHITE); 
 
-    display.setCursor(60, 10); 
-    sprintf(str_buff, "%4d", pm_1); 
-    display.print(str_buff);
-    
     display.setCursor(0, 10); 
-    sprintf(str_buff, "PM  1.0 = %4d ug/m3 ", pm_1); 
+    sprintf(str_buff, "Station_%d", station_id); 
     display.print(str_buff);
     
     display.setCursor(0, 25); 
-    sprintf(str_buff, "PM  2.5 = %4d ug/m3 ", pm_25); 
+    sprintf(str_buff, "PM  1.0 = %4d ug/m3 ", pm_1); 
     display.print(str_buff);
     
     display.setCursor(0, 40); 
+    sprintf(str_buff, "PM  2.5 = %4d ug/m3 ", pm_25); 
+    display.print(str_buff);
+    
+    display.setCursor(0, 55); 
     sprintf(str_buff, "PM 10.0 = %4d ug/m3 ", pm_10); 
     display.print(str_buff);
 
@@ -341,9 +341,11 @@ void NTP_Update() {
     unsigned long lowWord  = word(packetBuffer[42], packetBuffer[43]); 
     unsigned long secsSince1900 = highWord << 16 | lowWord; 
     unsigned long secs2020 = 3786825600UL; 
+    unsigned long secs2022 = 1641038400UL; 
+    unsigned long secs2023 = 1672574400UL; 
 
     if (secsSince1900 > 0) { 
-      unsigned long epoch = secsSince1900 - secs2020; 
+      unsigned long epoch = secsSince1900 - secs2022; 
       unsigned long gmt_offset = +7UL; 
       epoch = (epoch + (gmt_offset * 3600UL)); 
 
